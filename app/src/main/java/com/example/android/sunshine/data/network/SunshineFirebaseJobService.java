@@ -17,6 +17,7 @@ package com.example.android.sunshine.data.network;
 
 import android.util.Log;
 
+import com.example.android.sunshine.utilities.InjectorUtils;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
@@ -39,8 +40,9 @@ public class SunshineFirebaseJobService extends JobService {
     @Override
     public boolean onStartJob(final JobParameters jobParameters) {
         Log.d(LOG_TAG, "Job service started");
-
-        // TODO Finish this method when instructed. Will eventually call the fetchWeather code
+        
+        WeatherNetworkDataSource weatherNetworkDataSource = InjectorUtils.provideNetworkDataSource(getApplicationContext());
+        weatherNetworkDataSource.fetchWeather();
 
         jobFinished(jobParameters, false);
 
