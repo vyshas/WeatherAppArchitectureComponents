@@ -19,6 +19,7 @@ import android.support.annotation.Nullable;
 
 import com.example.android.sunshine.data.database.WeatherEntry;
 import com.example.android.sunshine.utilities.SunshineDateUtils;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +53,7 @@ final class OpenWeatherJsonParser {
 
     private static final String OWM_MESSAGE_CODE = "cod";
 
-    private static boolean hasHttpError(JSONObject forecastJson) throws JSONException {
+    public static boolean hasHttpError(JSONObject forecastJson) throws JSONException {
         if (forecastJson.has(OWM_MESSAGE_CODE)) {
             int errorCode = forecastJson.getInt(OWM_MESSAGE_CODE);
 
@@ -69,7 +70,13 @@ final class OpenWeatherJsonParser {
         return false;
     }
 
-    private static WeatherEntry[] fromJson(final JSONObject forecastJson) throws JSONException {
+    public static boolean hasHttpError(JsonObject jsonObject) throws JSONException {
+        JSONObject forecastJson = new JSONObject(jsonObject.toString());
+        return hasHttpError(forecastJson);
+    }
+
+
+    public static WeatherEntry[] fromJson(final JSONObject forecastJson) throws JSONException {
         JSONArray jsonWeatherArray = forecastJson.getJSONArray(OWM_LIST);
 
         WeatherEntry[] weatherEntries = new WeatherEntry[jsonWeatherArray.length()];
